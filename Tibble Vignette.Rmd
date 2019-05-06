@@ -1,6 +1,6 @@
 ---
 title: "Tibble Vignette"
-author: "Austin Chan"
+author: "Austin Chan. Extended by: Stephen Jones, Eunice Ok"
 date: "April 18, 2019"
 output: 
   html_document:
@@ -267,6 +267,23 @@ women_stem_tibble[["Major_code"]]
 
 
 ```
+#Tidyverse, Part III, added by Eunice Ok
+
+Tibbles are a useful variation on the base R dataframe. Tidyr is a useful paradigm for organizing data that follows 3 main rules. They are:
+1. Each variable must have it's own column.
+2. Each observation must have its own row. 
+3. Each value must have its own cell. 
+
+```{r}
+women_stem_tibble
+```
+From a quick look at the tibble of women in stem, it appears to be a tidy dataset already. Each variable has its own column, each observation has its own row, and each value has its own cell. In addition, the column names are informative and easily understandable. 
+
+It the data were not tidy already, the tidyr universe would make available the following example functions to "tidy" the data: 
+- gather or spread 
+- separate or unite
+- mutate 
+- select
 
 
 
