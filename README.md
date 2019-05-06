@@ -52,6 +52,9 @@ Extensions in John Perez's: https://github.com/dapolloxp/SPRING2019TIDYVERSE-1/b
 The packages chosen for this assignment are Purrr and Stringr
 https://github.com/acatlin/SPRING2019TIDYVERSE/blob/master/DATA607%20Tidyverse%20Assignment.Rmd
 
+### Eunice Ok
+Purrr, with usage of dplyr and tidyr. Extended tibbles code by Austin Chan. 
+
 ## base R vs. tidyverse
 
 ### Jadgish Chhabria
