@@ -1,0 +1,95 @@
+---
+title: "Tidyverse assignment: Purrr Vignette"
+author: "Eunice Ok"
+date: "5/5/2019"
+output: html_document
+---
+
+Vignette focusing on Purrr (but including dplyr and tidyr)
+
+Dataset taken from: https://www.kaggle.com/zynicide/wine-reviews/downloads/wine-reviews.zip/4
+Purr documentation/tips from: https://r4ds.had.co.nz/iteration.html#the-map-functions 
+
+It is possible to solve iteration problems using two programming paradigms: imperative programming and functional programming. This vignette first walks through an example of solving a problem by using imperative programming via loops. Then, by using a tool in functional programming called purrr (a tidyverse core package). Note purr is primarily useful for working with vectors.   
+
+
+Install & load packages
+```{r, message=F, warning=F}
+#install.packages("tidyverse")
+library(tidyverse)
+```
+
+Read data 
+```{r}
+# Read in file containing wine ratings
+filename = 'winemag-data-130k-v2.csv'
+df <- read.csv(filename) 
+# Check out the dataframe
+head(df, n=1)
+```
+```{r}
+# Look at colnames so we know what to access 
+colnames(df)
+```
+
+Clean & transform data
+```{r}
+# Select a portion of the wine ratings data for demo purposes. California has the most reviews.
+x <- as.data.frame(table(df$province))
+x <- x[order(x$Freq,decreasing = TRUE),]
+head(x)
+```
+
+```{r}
+# Generate dataframes for California
+cali <- subset(df, province == 'California')
+
+# Loop to find the average review of cali wines using tidyverse package dplyr 
+cali <- cali %>% select(points, price)
+
+# drop missing values using tidyverse package tidyr
+cali <- drop_na(cali)
+
+# Confirm # reviews. Cali has over 35K
+print(dim(cali)[1])
+```
+
+Method 1: FOR LOOPS - Use loops to run calculations on columns  
+```{r}
+# Calculate averages for Cali using loops
+cali_output <- vector("double",ncol(cali))  # 1. preallocate output space data type in vector is numeric col # equiv for df col #.
+
+for (i in seq_along(cali)){                 # 2. sequence. specify to iterate over cols  
+  cali_output[[i]] <-mean(cali[[i]])         # 3. body
+}
+
+print(cali_output)
+```
+
+We can confirm the for loops calculations using the summary function below
+```{r}
+summary(cali)
+```
+
+Method 2: PURRR - Use purrr to run calculations on columns  
+Purrr provides functions that allow you to loop over a vector, do something to each element, and save the results. The biggest benefit over loops is readability. 
+
+There is one function for each type of output - list and vectors - logical, integer, double, and character.  
+
+- map() makes a list.
+- map_lgl() makes a logical vector.
+- map_int() makes an integer vector.
+- map_dbl() makes a double vector.
+- map_chr() makes a character vector.
+
+```{r}
+map_dbl(cali, mean)
+```
+
+Compared to the for loop, purr map functions focus on the operation being performed instead of the verbose code required to loop over every element and store outputs. The piped variation of purrr is even more indicative of this focus. 
+```{r}
+cali %>% map_dbl(mean)
+```
+
+In conclusion, compared to for loops, which requires more code, using purrr to perform iteration is much cleaner and readable. 
+
